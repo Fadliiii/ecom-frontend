@@ -1,30 +1,22 @@
 import { FaExclamation, FaExclamationTriangle } from "react-icons/fa";
 import ProductCard from "./ProductCard";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchProducts } from "../store/action";
 
 const Products = ()=>{
     const isLoading =false;
     const errorMessage = "";
-    const products = [{
-                        productId: 652,
-                        productName:"iPhone XS",
-                        image:"https://placehold.co/600x400",
-                        description:"Experience the latest in the mobile advanced cameras,powerful processing, and an all-day battery.",
-                        quantity:1,
-                        price:1450.0,
-                        discount:10.0,
-                        specialPrice:1305.0
-                        },
-                        {
-                        productId:652,
-                        productName:"iPhone Duo",
-                        image:"https://placehold.co/600x400",
-                        description:"Experience the new iPhone folding",
-                        quantity:0,
-                        price:2250,
-                        discount:20.0,
-                        specialPrice:0
-                        }  
-                    ]
+    const {products} = useSelector(
+        (state)=> state.products
+    );
+    const dispatch = useDispatch();
+    
+    useEffect(()=>{
+        dispatch(fetchProducts());
+    },[dispatch]);
+
+
     return(
         <div className="lg:px-14 sm:px-8 px-4 py-14 2xl:w-[90%] 2xl:mx-auto">
             {isLoading ? (
