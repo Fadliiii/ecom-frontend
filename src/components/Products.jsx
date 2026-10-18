@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchProducts } from "../store/action";
 import Filter from "./Filter";
+import useProductFilter from "./useProductFIlter";
+
 
 const Products = ()=>{
     const { isLoading , errorMessage } = useSelector(
@@ -14,12 +16,10 @@ const Products = ()=>{
     const {products} = useSelector(
         (state)=> state.products
     );
-    const dispatch = useDispatch();
-    
-    useEffect(()=>{
-        dispatch(fetchProducts());
-    },[dispatch]);
 
+    const dispatch = useDispatch();
+     useProductFilter();
+  
 
     return(
 
