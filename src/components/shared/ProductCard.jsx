@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import ProductViewModal from "./ProductViewModal";
+import { truncateText } from "../../utils/truncateText";
 
 const ProductCard = ({
     productId,
@@ -10,7 +11,8 @@ const ProductCard = ({
     quantity,                     
     price,
     discount,
-    specialPrice
+    specialPrice,
+    about=false
 }) => {
     
     const [openProductViewModal,setOpenProductViewModal]= useState(false);
@@ -19,8 +21,11 @@ const ProductCard = ({
     const isAvalaible = quantity && Number(quantity)> 0;
 
     const handleProductView = (product) =>{
-        setSelectedViewProduct(product);
-        setOpenProductViewModal(true);
+        if(!about){
+         setSelectedViewProduct(product);
+          setOpenProductViewModal(true);
+        }
+      
     };
 
     return (
@@ -55,13 +60,15 @@ const ProductCard = ({
                 specialPrice
                 })
                 }} 
-                    className="text-lg font-semibold mb-2 cursor-pointer">{productName}
+                className="text-lg font-semibold mb-2 cursor-pointer"
+                >{truncateText(productName,50)}
                 </h2>
                 
                 <div className="min-h-20 max-h-20">
-                    <p className="text-gray-600 text-sm">{description}</p>
+                    <p className="text-gray-600 text-sm"
+                    >{truncateText(description,80)}</p>
                 </div>
-                
+            { !about && (
                 <div className="flex items-center justify-between">
                 {specialPrice ? (
                 <div className="flex flex-col">
@@ -87,6 +94,8 @@ const ProductCard = ({
                 {isAvalaible ?"Add to Cart" : "Stock Out"}
                 </button>
                  </div>
+            )}
+                
             </div>
             <ProductViewModal 
             open={openProductViewModal}

@@ -9,6 +9,7 @@ const useProductFilter=()=>{
     const dispatch = useDispatch();
     useEffect(()=>{
         const params = new URLSearchParams();
+        
         const currentPage = searchParams.get("page")? 
         Number(searchParams.get("page")) : 1;   
 

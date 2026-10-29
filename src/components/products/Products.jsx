@@ -1,11 +1,13 @@
 import { FaExclamation, FaExclamationTriangle } from "react-icons/fa";
-import ProductCard from "./ProductCard";
+import ProductCard from "../shared/ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchProducts } from "../store/action";
+import { fetchCategories, fetchProducts } from "../../store/action";
 import Filter from "./Filter";
-import useProductFilter from "./useProductFIlter";
+import useProductFilter from "../../hooks/useProductFIlter";
 
+import Loader from "../shared/Loader";
+import Paginations from "../shared/Paginations";
 
 const Products = ()=>{
     const { isLoading , errorMessage } = useSelector(
@@ -13,7 +15,7 @@ const Products = ()=>{
     );
 
 
-    const {products} = useSelector(
+    const {products,categories,pagination} = useSelector(
         (state)=> state.products
     );
 
@@ -21,12 +23,16 @@ const Products = ()=>{
      useProductFilter();
   
 
+    useEffect(()=>{
+        dispatch(fetchCategories());
+    },[dispatch]);
+    
     return(
 
         <div className="lg:px-14 sm:px-8 px-4 py-14 2xl:w-[90%] 2xl:mx-auto">
-          <Filter />
+          <Filter categories={categories ? categories : []}/>
             {isLoading ? (
-                <p>It is loading...</p>
+                <Loader text={"Product Loading"}/>
             ) : errorMessage ?(
                 <div className="flex justify-center items-center h-[200px]">
                     <FaExclamationTriangle className="text-slate-800 text-3xl mr-2"/>
@@ -45,6 +51,12 @@ const Products = ()=>{
                     </div>
                 </div>
             )}
+            <div className="flex justify-center pt-10">
+                 <Paginations
+                 numberOfPage = {pagination?.totalPages}
+                 totalProducts ={pagination?.totalElements}/>
+            </div>
+         
         </div>
     )
 }
